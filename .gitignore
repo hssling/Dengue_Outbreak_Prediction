@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.env
+.venv
+env/
+venv/
+
+# Data (EXCLUDE ALL RAW DATA)
+data/raw/
+*.pdf
+*.zip
+*.shp
+*.shx
+*.dbf
+*.parquet
+*.xlsx
+
+# Project specific
+.vscode/
+.idea/
+outputs/models/*.joblib

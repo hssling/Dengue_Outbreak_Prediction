@@ -1,0 +1,36 @@
+State,Region,Risk Score,Risk Category,Forecast Cases,Health Index,Annual Rain
+Tamil Nadu,South,26.5,Low,864,69.14,1004.4149999999998
+Telangana,South,23.7,Low,398,47.55,1088.125
+Andhra Pradesh,South,23.2,Low,123,31.0,1013.955
+Uttar Pradesh,Central,22.6,Low,391,50.7,891.2150000000001
+Tripura,Northeast,22.3,Low,19,27.0,2618.5725
+Rajasthan,North,21.9,Low,215,41.33,866.28
+Maharashtra,West,21.4,Low,437,57.93,914.4900000000001
+Karnataka,South,21.4,Low,307,49.26,781.49
+Gujarat,West,21.4,Low,232,44.21,803.28
+Sikkim,East,19.9,Low,1,33.91,1892.945
+Goa,West,19.9,Low,7,34.26,2986.84
+Haryana,North,19.6,Low,142,44.31,795.75
+Jharkhand,East,19.0,Low,1,36.72,1493.795
+Delhi,North,18.8,Low,219,51.88,871.7099999999999
+Manipur,Northeast,18.7,Low,241,53.68,1328.5525
+Madhya Pradesh,Central,17.6,Low,98,47.74,1118.1999999999998
+Meghalaya,Northeast,17.1,Low,1,43.05,3924.6425
+Jammu & Kashmir,North,16.6,Low,136,53.58724137931034,1518.524396551724
+Chandigarh,North,16.0,Low,3,47.0,1364.4650000000001
+Odisha,East,15.3,Low,138,58.08,1222.9675
+Kerala,South,14.7,Low,469,82.2,2082.805
+Uttrakhand,Other,14.6,Low,34,53.58724137931034,1518.524396551724
+Puduchery,Other,14.5,Low,28,53.58724137931034,1518.524396551724
+A& N Island,Other,14.0,Low,5,53.58724137931034,1518.524396551724
+D&N Haveli,Other,14.0,Low,5,53.58724137931034,1518.524396551724
+West Bengal*,Other,14.0,Low,5,53.58724137931034,1518.524396551724
+Punjab,North,13.7,Low,234,69.95,844.7149999999999
+Arunachal Pradesh,Northeast,13.4,Low,4,55.53,3112.3575
+Bihar,East,12.9,Low,229,72.42,1052.0725
+Lakshadweep,South,11.6,Low,15,62.53,1933.605
+Chhattisgarh,Central,11.2,Low,5,63.17,1463.0775
+Assam,Northeast,11.2,Low,14,63.59,1425.505
+Mizoram,Northeast,9.5,Low,27,70.16,2440.2850000000003
+Himachal Pradesh,North,9.4,Low,19,69.96,1087.9775
+Nagaland,Northeast,7.4,Low,4,75.77,1613.1175
