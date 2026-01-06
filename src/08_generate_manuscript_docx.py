@@ -90,7 +90,7 @@ def parse_markdown_table(doc, lines, start_index):
     return i
 
 def process_inline_formatting(paragraph, text):
-    """Apply bold/italic formatting."""
+    """Apply bold/italic/superscript formatting."""
     # Split by bold markers
     parts = re.split(r'(\*\*.*?\*\*)', text)
     for part in parts:
@@ -98,14 +98,21 @@ def process_inline_formatting(paragraph, text):
             run = paragraph.add_run(part[2:-2])
             run.font.bold = True
         else:
-            # Check for italics in the non-bold parts
+            # Check for italics
             italic_parts = re.split(r'(\*.*?\*)', part)
             for ipart in italic_parts:
                 if ipart.startswith('*') and ipart.endswith('*'):
                     run = paragraph.add_run(ipart[1:-1])
                     run.font.italic = True
                 else:
-                    paragraph.add_run(ipart)
+                    # Check for superscripts (e.g. ^1,2^)
+                    super_parts = re.split(r'(\^.*?\^)', ipart)
+                    for spart in super_parts:
+                        if spart.startswith('^') and spart.endswith('^'):
+                             run = paragraph.add_run(spart[1:-1])
+                             run.font.superscript = True
+                        else:
+                             paragraph.add_run(spart)
 
 def generate_professional_manuscript():
     print("Generating Professional Manuscript...")
@@ -119,9 +126,19 @@ def generate_professional_manuscript():
     t_para.style = 'Heading 1'
     
     # Authors
-    a_para = doc.add_paragraph('Siddalingaiah H S, MD')
+    a_para = doc.add_paragraph('Siddalingaiah H S 1, *')
     a_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    doc.add_paragraph('Independent Researcher, Bangalore, India').alignment = WD_ALIGN_PARAGRAPH.CENTER
+    
+    # Affiliations
+    aff_para = doc.add_paragraph('1 Department of Community Medicine, Shridevi Institute of Medical Sciences and Research Hospital, Tumkur 572106, Karnataka, India')
+    aff_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    aff_para.style = 'Normal'
+    
+    # Corresponding
+    corr_para = doc.add_paragraph('*Corresponding Author: E-mail: hssling@yahoo.com; Tel.: +91-8941087719')
+    corr_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    corr_para.style = 'Normal'
+    
     doc.add_page_break()
     
     # --- CONTENT PARSING ---
@@ -197,16 +214,26 @@ def generate_professional_manuscript():
             
         i += 1
         
-    # Save
+    # Save with robust conflict resolution
     os.makedirs('submission_package', exist_ok=True)
-    out_path = 'submission_package/Main_Manuscript_IJMR_Submission.docx'
-    try:
-        doc.save(out_path)
-        print(f"Saved {out_path}")
-    except PermissionError:
-        print(f"Error: Could not save to {out_path}. File might be open. Saving as _v2.")
-        doc.save(out_path.replace('.docx', '_v2.docx'))
-        print(f"Saved {out_path.replace('.docx', '_v2.docx')}")
+    base_path = 'submission_package/Main_Manuscript_IJMR_Submission.docx'
+    
+    saved = False
+    counter = 1
+    out_path = base_path
+    
+    while not saved and counter < 20:
+        try:
+            doc.save(out_path)
+            print(f"Saved {out_path}")
+            saved = True
+        except PermissionError:
+            print(f"Error: Could not save to {out_path}. File open. Trying next version...")
+            counter += 1
+            out_path = base_path.replace('.docx', f'_v{counter}.docx')
+            
+    if not saved:
+        print("CRITICAL ERROR: Could not save manuscript after 20 attempts. Please close the file.")
 
 if __name__ == "__main__":
     generate_professional_manuscript()
