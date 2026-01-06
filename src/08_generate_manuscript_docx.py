@@ -199,9 +199,14 @@ def generate_professional_manuscript():
         
     # Save
     os.makedirs('submission_package', exist_ok=True)
-    out_path = 'submission_package/Main_Manuscript_Professional.docx'
-    doc.save(out_path)
-    print(f"Saved {out_path}")
+    out_path = 'submission_package/Main_Manuscript_IJMR_Submission.docx'
+    try:
+        doc.save(out_path)
+        print(f"Saved {out_path}")
+    except PermissionError:
+        print(f"Error: Could not save to {out_path}. File might be open. Saving as _v2.")
+        doc.save(out_path.replace('.docx', '_v2.docx'))
+        print(f"Saved {out_path.replace('.docx', '_v2.docx')}")
 
 if __name__ == "__main__":
     generate_professional_manuscript()

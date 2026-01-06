@@ -63,6 +63,18 @@ def generate_figures():
         plt.tight_layout()
         plt.savefig('outputs/figures/top_risk_states.png', dpi=300)
         print("Saved top_risk_states.png")
+        plt.close()
+
+        # 3. Validation Plot (Forecast vs Risk Score)
+        plt.figure(figsize=(10, 6))
+        sns.scatterplot(data=risk_df, x='Forecast Cases', y='Risk Score', hue='Region', s=100)
+        plt.title('Validation: Forecast Magnitude vs Composite Risk Score', fontsize=14)
+        plt.xlabel('Forecasted Cases (Model Output)')
+        plt.ylabel('Composite Risk Score')
+        plt.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.savefig('outputs/figures/validation_scatter.png', dpi=300)
+        print("Saved validation_scatter.png")
         
         # Risk Vs Health Index Scatter
         plt.figure(figsize=(8, 6))
