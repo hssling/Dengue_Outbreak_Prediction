@@ -89,29 +89,133 @@ def parse_markdown_table(doc, lines, start_index):
     doc.add_paragraph() # Spacing after table
     return i
 
-def process_inline_formatting(paragraph, text):
-    """Apply bold/italic formatting."""
-    # Split by bold markers
-    parts = re.split(r'(\*\*.*?\*\*)', text)
+def process_math_text(paragraph, math_text):
+    """
+    Parses simple LaTeX-like math text inside $...$ and applies formatting.
+    Supports: ^ (superscript), _ (subscript), and greek letters.
+    """
+    # math_text comes in as "$E = mc^2$" (without dollars if split correctly, or we strip them)
+    math_text = math_text.strip('$')
+    
+    # Common Greek and Math Symbols Map
+    symbols = {
+        '\\alpha': 'α', '\\beta': 'β', '\\gamma': 'γ', '\\delta': 'δ', '\\epsilon': 'ε',
+        '\\theta': 'θ', '\\lambda': 'λ', '\\mu': 'μ', '\\sigma': 'σ', '\\pi': 'π',
+        '\\sum': '∑', '\\prod': '∏', '\\approx': '≈', '\\ne': '≠', '\\le': '≤', '\\ge': '≥',
+        '\\times': '×', '\\rightarrow': '→'
+    }
+    
+    # Replace known symbols first
+    for k, v in symbols.items():
+        math_text = math_text.replace(k, v)
+        
+    # Handle Functions (sin, cos, log) -> Standard text (not italic usually, but we will plain text them)
+    # We can just remove the backslash for these simple text functions
+    functions = ['\\sin', '\\cos', '\\tan', '\\log', '\\ln', '\\quad']
+    for f in functions:
+        math_text = math_text.replace(f, f.replace('\\', ''))
+        
+    # Handle Fractions: \frac{a}{b} -> (a/b)
+    # Basic regex for simple fractions
+    math_text = re.sub(r'\\frac\{(.*?)\}\{(.*?)\}', r'(\1/\2)', math_text)
+
+    # Regex to tokenize: regular chars, or ^..., or _...
+    # We want to split by ^ or _ but keep the markers to know what to do
+    # Simple parser: look for ^(Token) or _(Token) or just Token
+    
+    # Let's try a char-by-char or simple split approach
+    # A robust way is to find segments of plain, sub, sup
+    # This regex looks for: ^ followed by single char or {group}, OR _ followed by single char or {group}
+    pattern = r'(\^\{.*?\}|\^[^\s]|\_\{.*?\}|\_[^\s])'
+    parts = re.split(pattern, math_text)
+    
     for part in parts:
-        if part.startswith('**') and part.endswith('**'):
-            run = paragraph.add_run(part[2:-2])
-            run.font.bold = True
+        if not part: continue
+        
+        # Superscript
+        if part.startswith('^'):
+            content = part[1:]
+            if content.startswith('{') and content.endswith('}'):
+                content = content[1:-1]
+            run = paragraph.add_run(content)
+            run.font.superscript = True
+            
+        # Subscript
+        elif part.startswith('_'):
+            content = part[1:]
+            if content.startswith('{') and content.endswith('}'):
+                content = content[1:-1]
+            run = paragraph.add_run(content)
+            run.font.subscript = True
+            
+        # Normal Math Text
         else:
-            # Check for italics in the non-bold parts
-            italic_parts = re.split(r'(\*.*?\*)', part)
-            for ipart in italic_parts:
-                if ipart.startswith('*') and ipart.endswith('*'):
-                    run = paragraph.add_run(ipart[1:-1])
-                    run.font.italic = True
+            run = paragraph.add_run(part)
+            # Heuristic: If it looks like a variable (single letter), italicize. 
+            # If numbers or operators, maybe not? Word usually italicizes everything in Equation mode.
+            # We'll stick to italic for consistency, unless it's a known function word like 'sin'
+            if part.strip() in ['sin', 'cos', 'tan', 'log', 'ln', 'quad']:
+                run.font.italic = False
+            else:
+                run.font.italic = True
+
+def process_inline_formatting(paragraph, text):
+    """Apply bold/italic/superscript/math formatting."""
+    # Priority: Math ($...$) -> Bold (**...**) -> Italic (*...*) -> Superscript (^...^)
+    
+    # Check for Display Math ($$...$$) - usually handled by line logic, but if inline?
+    # We'll treat inline $$ same as $ for now.
+    
+    # 1. Split by Math
+    math_parts = re.split(r'(\$.*?\$)', text)
+    for mpart in math_parts:
+        if mpart.startswith('$') and mpart.endswith('$') and len(mpart) > 2:
+            process_math_text(paragraph, mpart)
+        else:
+            # 2. Split by Bold
+            bold_parts = re.split(r'(\*\*.*?\*\*)', mpart)
+            for bpart in bold_parts:
+                if bpart.startswith('**') and bpart.endswith('**'):
+                    run = paragraph.add_run(bpart[2:-2])
+                    run.font.bold = True
                 else:
-                    paragraph.add_run(ipart)
+                    # 3. Check for Italics
+                    italic_parts = re.split(r'(\*.*?\*)', bpart)
+                    for ipart in italic_parts:
+                        if ipart.startswith('*') and ipart.endswith('*'):
+                            run = paragraph.add_run(ipart[1:-1])
+                            run.font.italic = True
+                        else:
+                            # 4. Check for Superscripts (Citation style ^1,2^)
+                            super_parts = re.split(r'(\^.*?\^)', ipart)
+                            for spart in super_parts:
+                                if spart.startswith('^') and spart.endswith('^'):
+                                     run = paragraph.add_run(spart[1:-1])
+                                     run.font.superscript = True
+                                else:
+                                     paragraph.add_run(spart)
 
 def generate_professional_manuscript():
     print("Generating Professional Manuscript...")
-    doc = Document()
-    set_document_styles(doc)
     
+    # Setup Document
+    doc = Document()
+    
+    # Styles
+    set_document_styles(doc) # Call existing style setter
+    
+    # Define styles if missing
+    styles = doc.styles
+    if 'Caption' not in styles:
+        s = styles.add_style('Caption', WD_STYLE_TYPE.PARAGRAPH)
+        s.base_style = styles['Normal']
+        s.font.size = Pt(10)
+        s.font.italic = True
+    
+    # Read Markdown
+    with open('reports/MANUSCRIPT_FINAL.md', 'r', encoding='utf-8') as f:
+        lines = f.readlines()
+        
     # --- TITLE PAGE ---
     # Title
     t_para = doc.add_paragraph('Multi-Modal Machine Learning Framework for State-Level Dengue Outbreak Prediction in India')
@@ -119,21 +223,38 @@ def generate_professional_manuscript():
     t_para.style = 'Heading 1'
     
     # Authors
-    a_para = doc.add_paragraph('Siddalingaiah H S, MD')
+    a_para = doc.add_paragraph('Siddalingaiah H S 1, *')
     a_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    doc.add_paragraph('Independent Researcher, Bangalore, India').alignment = WD_ALIGN_PARAGRAPH.CENTER
+    
+    # Affiliations
+    aff_para = doc.add_paragraph('1 Department of Community Medicine, Shridevi Institute of Medical Sciences and Research Hospital, Tumkur 572106, Karnataka, India')
+    aff_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    aff_para.style = 'Normal'
+    
+    # Corresponding
+    corr_para = doc.add_paragraph('*Corresponding Author: E-mail: hssling@yahoo.com; Tel.: +91-8941087719')
+    corr_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    corr_para.style = 'Normal'
+    
     doc.add_page_break()
     
     # --- CONTENT PARSING ---
-    with open('reports/MANUSCRIPT_FINAL.md', 'r', encoding='utf-8') as f:
-        lines = f.readlines()
-        
     i = 0
+    in_references = False
+    
     while i < len(lines):
         line = lines[i].strip()
         
-        # Skip metadata/empty
-        if not line or line.startswith('---'):
+        # Skip empty lines
+        if not line:
+            i += 1
+            continue
+            
+        # Display Math ($$...$$)
+        if line.startswith('$$') and line.endswith('$$'):
+            p = doc.add_paragraph()
+            p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            process_math_text(p, line.replace('$$', '$')) # Reuse inline logic but centered
             i += 1
             continue
             
@@ -197,11 +318,26 @@ def generate_professional_manuscript():
             
         i += 1
         
-    # Save
+    # Save with robust conflict resolution
     os.makedirs('submission_package', exist_ok=True)
-    out_path = 'submission_package/Main_Manuscript_Professional.docx'
-    doc.save(out_path)
-    print(f"Saved {out_path}")
+    base_path = 'submission_package/Main_Manuscript_IJMR_Submission.docx'
+    
+    saved = False
+    counter = 1
+    out_path = base_path
+    
+    while not saved and counter < 20:
+        try:
+            doc.save(out_path)
+            print(f"Saved {out_path}")
+            saved = True
+        except PermissionError:
+            print(f"Error: Could not save to {out_path}. File open. Trying next version...")
+            counter += 1
+            out_path = base_path.replace('.docx', f'_v{counter}.docx')
+            
+    if not saved:
+        print("CRITICAL ERROR: Could not save manuscript after 20 attempts. Please close the file.")
 
 if __name__ == "__main__":
     generate_professional_manuscript()

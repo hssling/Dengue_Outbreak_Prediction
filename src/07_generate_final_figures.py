@@ -63,6 +63,18 @@ def generate_figures():
         plt.tight_layout()
         plt.savefig('outputs/figures/top_risk_states.png', dpi=300)
         print("Saved top_risk_states.png")
+        plt.close()
+
+        # 3. Validation Plot (Forecast vs Risk Score)
+        plt.figure(figsize=(10, 6))
+        sns.scatterplot(data=risk_df, x='Forecast Cases', y='Risk Score', hue='Region', s=100)
+        plt.title('Validation: Forecast Magnitude vs Composite Risk Score', fontsize=14)
+        plt.xlabel('Forecasted Cases (Model Output)')
+        plt.ylabel('Composite Risk Score')
+        plt.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.savefig('outputs/figures/validation_scatter.png', dpi=300)
+        print("Saved validation_scatter.png")
         
         # Risk Vs Health Index Scatter
         plt.figure(figsize=(8, 6))
@@ -73,8 +85,31 @@ def generate_figures():
         plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
         plt.tight_layout()
         plt.savefig('outputs/figures/risk_vs_vulnerability.png', dpi=300)
+        plt.savefig('outputs/figures/risk_vs_vulnerability.png', dpi=300)
         print("Saved risk_vs_vulnerability.png")
+        plt.close()
         
+        # 4. ROC Curve (New Requirement)
+        try:
+             roc_data = joblib.load('outputs/models/roc_data.joblib')
+             fpr, tpr, auc_score = roc_data['fpr'], roc_data['tpr'], roc_data['auc']
+             
+             plt.figure(figsize=(8, 6))
+             plt.plot(fpr, tpr, color='darkorange', lw=2, label=f'ROC curve (AUC = {auc_score:.3f})')
+             plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+             plt.xlim([0.0, 1.0])
+             plt.ylim([0.0, 1.05])
+             plt.xlabel('False Positive Rate')
+             plt.ylabel('True Positive Rate')
+             plt.title('Receiver Operating Characteristic (Outbreak Detection)', fontsize=14)
+             plt.legend(loc="lower right")
+             plt.grid(True, alpha=0.3)
+             plt.tight_layout()
+             plt.savefig('outputs/figures/roc_curve.png', dpi=300)
+             print("Saved roc_curve.png")
+        except Exception as e:
+            print(f"ROC Data not found or error: {e}")
+            
     except Exception as e:
         print(f"Could not generate risk plots: {e}")
 

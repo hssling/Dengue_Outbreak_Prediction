@@ -16,9 +16,9 @@ import joblib
 import warnings
 warnings.filterwarnings('ignore')
 
-from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
-from sklearn.model_selection import TimeSeriesSplit, cross_val_score
-from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor, GradientBoostingClassifier
+from sklearn.model_selection import TimeSeriesSplit, cross_val_score, train_test_split
+from sklearn.metrics import mean_squared_error, r2_score, roc_curve, auc, classification_report, confusion_matrix
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 
 # ------------------------------------------------------------------------------
@@ -303,7 +303,29 @@ def train_and_validate(df):
     final_model = models[best_model_name]
     final_model.fit(X_scaled, y)
     
-    return final_model, scaler, features, results
+    # --- ADDED: Classification for ROC Analysis ---
+    print("\nTraining Outbreak Classifier (for ROC/AUC)...")
+    threshold = np.percentile(y, 75)
+    y_class = (y > threshold).astype(int)
+    print(f"Outbreak Threshold (>75th percentile): {threshold:.0f} cases")
+    
+    clf = GradientBoostingClassifier(n_estimators=100, random_state=42)
+    # Use last year for validation
+    split_idx = int(len(X_scaled) * 0.8)
+    X_train, X_test = X_scaled.iloc[:split_idx], X_scaled.iloc[split_idx:]
+    y_train, y_test = y_class.iloc[:split_idx], y_class.iloc[split_idx:]
+    
+    clf.fit(X_train, y_train)
+    y_prob = clf.predict_proba(X_test)[:, 1]
+    fpr, tpr, _ = roc_curve(y_test, y_prob)
+    roc_auc = auc(fpr, tpr)
+    print(f"Classification AUC: {roc_auc:.3f}")
+    
+    # Save classifier and ROC data
+    joblib.dump(clf, 'outputs/models/outbreak_classifier.joblib')
+    joblib.dump({'fpr': fpr, 'tpr': tpr, 'auc': roc_auc}, 'outputs/models/roc_data.joblib')
+    
+    return final_model, scaler, features, results, clf, roc_auc
 
 # ------------------------------------------------------------------------------
 # 5. Risk Scoring & Forecasting
@@ -379,7 +401,7 @@ def main():
     print(f"Modeling Dataset: {df_model.shape[0]} samples, {df_model.shape[1]} columns")
     
     # 4. Train & Validate
-    model, scaler, feature_names, results = train_and_validate(df_model)
+    model, scaler, feature_names, results, clf, roc_auc = train_and_validate(df_model)
     
     # 5. Risk Scoring
     generate_risk_report(model, scaler, df_model, feature_names)
