@@ -1,0 +1,133 @@
+{
+  "dataset": {
+    "n_state_months": 1740,
+    "n_states": 15,
+    "year_min": 2015,
+    "year_max": 2024,
+    "n_features": 25,
+    "states": [
+      "Andhra Pradesh",
+      "Bihar",
+      "Delhi",
+      "Gujarat",
+      "Haryana",
+      "Karnataka",
+      "Kerala",
+      "Maharashtra",
+      "Odisha",
+      "Punjab",
+      "Rajasthan",
+      "Tamil Nadu",
+      "Telangana",
+      "Uttar Pradesh",
+      "West Bengal"
+    ]
+  },
+  "regression": {
+    "mean_r2": 0.89249141278801,
+    "sd_r2": 0.027862369669376653,
+    "mean_rmse": 232.47532060116782,
+    "sd_rmse": 24.152012166869966,
+    "mean_mae": 131.6418585231886,
+    "sd_mae": 13.827777203246983,
+    "folds": [
+      {
+        "fold": 1,
+        "rmse": 225.99779362443542,
+        "mae": 122.03020975277134,
+        "r2": 0.8497869709535874
+      },
+      {
+        "fold": 2,
+        "rmse": 236.66593509091035,
+        "mae": 134.09875636314297,
+        "r2": 0.8863233591658637
+      },
+      {
+        "fold": 3,
+        "rmse": 189.75136637786179,
+        "mae": 113.27702708773653,
+        "r2": 0.9331582905780634
+      },
+      {
+        "fold": 4,
+        "rmse": 258.0429041425472,
+        "mae": 134.53439585531652,
+        "r2": 0.883702694360038
+      },
+      {
+        "fold": 5,
+        "rmse": 251.91860377008445,
+        "mae": 154.26890355697563,
+        "r2": 0.9094857488824982
+      }
+    ]
+  },
+  "classification": {
+    "pooled_auc": 0.9364341085271317,
+    "mean_fold_auc": 0.9378968003763793,
+    "sd_fold_auc": 0.017996171250171503,
+    "sensitivity": 0.9093333333333333,
+    "n_outbreak": 435,
+    "n_total": 1740
+  },
+  "grouped_importance": {
+    "Autoregressive": 20.75785030655199,
+    "Seasonality": 73.99958917538632,
+    "Climate": 1.1957064248959643,
+    "Vulnerability": 4.046854093165729
+  },
+  "top_features": {
+    "month_sin": 69.9539582512776,
+    "cases_rolling3": 18.141948406040715,
+    "month_cos": 3.8486891634479012,
+    "urban_pct_2011": 2.984104133035056,
+    "cases_lag1": 1.309530139351542,
+    "health_index_2019_20": 0.7118252952528706,
+    "cases_lag2": 0.6336080439586228,
+    "rainfall_mm": 0.5151641562490612
+  },
+  "ablation": [
+    {
+      "model": "Seasonality + autoregression",
+      "n_features": 8,
+      "r2": 0.9120880335407222,
+      "rmse": 210.21815019452714,
+      "mae": 117.500206443241
+    },
+    {
+      "model": "+ Climate",
+      "n_features": 19,
+      "r2": 0.8937147648445872,
+      "rmse": 231.19848133627752,
+      "mae": 132.09110737478468
+    },
+    {
+      "model": "+ Vulnerability (full)",
+      "n_features": 25,
+      "r2": 0.89249141278801,
+      "rmse": 232.47532060116782,
+      "mae": 131.6418585231886
+    }
+  ],
+  "between_state_association": {
+    "health_index": {
+      "spearman_rho": 0.2285714285714285,
+      "p_value": 0.41256617049636035
+    },
+    "gdp_pc": {
+      "spearman_rho": 0.5071428571428571,
+      "p_value": 0.05366366378080588
+    },
+    "seci": {
+      "spearman_rho": 0.2785714285714285,
+      "p_value": 0.3147094732307908
+    }
+  },
+  "field_score_validation": {
+    "spearman_rho": 0.7566259305853172,
+    "p_value": 6e-323,
+    "scale_min": 0,
+    "scale_max": 6
+  }
+}
