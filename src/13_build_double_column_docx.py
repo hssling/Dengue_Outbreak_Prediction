@@ -145,9 +145,9 @@ def title_banner(doc, title):
          "generation is available at the repository above; all reported statistics are "
          "regenerable from a single pipeline script."),
         ("Author Contributions", "Siddalingaiah H S: Conceptualization, Methodology, "
-         "Software, Formal analysis, Visualization, Writing - original draft. "
-         "Sowjanya D: Data curation, Investigation, Writing - review & editing. "
-         "Rangaswamy H V: Supervision, Validation, Writing - review & editing."),
+         "Software, Formal analysis, Visualization, Supervision, Validation, "
+         "Writing - original draft. Sowjanya D: Writing - review & editing. "
+         "Rangaswamy H V: Writing - review & editing."),
     ]
     for h, body in decl:
         p = doc.add_paragraph()
