@@ -85,9 +85,8 @@ def build_supplementary():
     t = doc.add_paragraph(); t.alignment = WD_ALIGN_PARAGRAPH.CENTER
     r = t.add_run("Supplementary Information"); r.bold = True; r.font.size = Pt(14)
     s = doc.add_paragraph(); s.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = s.add_run("Structural Determinants Without Short-Term Predictability: "
-                  "A Leakage-Controlled Benchmark of State-Level Dengue Burden "
-                  "in India, 2015–2024\n"
+    r = s.add_run("Apparent Machine Learning Skill in Indian Dengue Forecasting "
+                  "Vanishes Under Leakage-Free Within-State Evaluation\n"
                   "International Journal of Data Science and Analytics")
     r.italic = True; r.font.size = Pt(9.5)
 
@@ -359,6 +358,14 @@ def build_cover():
         "structural gradient: dengue incidence rises with urbanisation (ρ = 0.635) and "
         "GDP per capita (ρ = 0.609), the latter robust to adjustment for a "
         "surveillance-capacity proxy.",
+
+        "Because the empirical content has changed, the title has changed with it. The "
+        "manuscript was submitted as “Multi-Modal Machine Learning Framework for "
+        "State-Level Dengue Outbreak Prediction in India”; it is now “Apparent Machine "
+        "Learning Skill in Indian Dengue Forecasting Vanishes Under Leakage-Free "
+        "Within-State Evaluation”. The former title promised a predictive framework "
+        "that the authenticated data do not support, and implied a monthly horizon "
+        "that no Indian data source permits.",
 
         "The paper is consequently a rigorously benchmarked negative forecasting result "
         "combined with a robust spatial finding and a formal quantification of "

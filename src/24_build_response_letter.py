@@ -543,8 +543,10 @@ def build_docx():
     h = doc.add_paragraph(); h.alignment = WD_ALIGN_PARAGRAPH.CENTER
     r = h.add_run("Response to the Editor and Reviewers"); r.bold = True; r.font.size = Pt(14)
     sub = doc.add_paragraph(); sub.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = sub.add_run("Multi-Modal Machine Learning Framework for State-Level Dengue "
-                    "Outbreak Prediction in India\n"
+    r = sub.add_run("Apparent Machine Learning Skill in Indian Dengue Forecasting "
+                    "Vanishes Under Leakage-Free Within-State Evaluation\n"
+                    "(submitted as “Multi-Modal Machine Learning Framework for "
+                    "State-Level Dengue Outbreak Prediction in India”)\n"
                     f"International Journal of Data Science and Analytics — "
                     f"Submission ID {SUBMISSION_ID}")
     r.italic = True; r.font.size = Pt(9.5)
@@ -612,6 +614,11 @@ def build_docx():
         "The composite risk score, risk-ranking table, forecast risk map and field "
         "scorecard are withdrawn, along with the deep-learning comparison and all "
         "seasonality claims.",
+        "The title has changed to match the revised content, from “Multi-Modal Machine "
+        "Learning Framework for State-Level Dengue Outbreak Prediction in India” to "
+        "“Apparent Machine Learning Skill in Indian Dengue Forecasting Vanishes Under "
+        "Leakage-Free Within-State Evaluation”. The original title promised a "
+        "predictive framework the authenticated data do not support.",
         "Both a clean and a tracked-changes manuscript file are supplied.",
     ]:
         p = doc.add_paragraph(line, style="List Bullet")
@@ -628,8 +635,10 @@ def build_docx():
 
 def build_md():
     L = ["# Response to the Editor and Reviewers", "",
-         "**Multi-Modal Machine Learning Framework for State-Level Dengue Outbreak "
-         "Prediction in India**", "",
+         "**Apparent Machine Learning Skill in Indian Dengue Forecasting Vanishes "
+         "Under Leakage-Free Within-State Evaluation**", "",
+         "*(submitted as “Multi-Modal Machine Learning Framework for State-Level "
+         "Dengue Outbreak Prediction in India”)*", "",
          f"*International Journal of Data Science and Analytics — Submission ID "
          f"{SUBMISSION_ID}*", "", "## Letter to the Editor", ""]
     L += [p + "\n" for p in OPENING]
