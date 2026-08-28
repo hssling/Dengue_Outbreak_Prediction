@@ -23,6 +23,21 @@ additionally contains 88 insertions and 65 deletions as genuine Word revisions
 **Not for upload:** this README, and `Response_to_Reviewers_IJDSA_R1.md` (a Markdown
 mirror of #4 kept for version control).
 
+## Optional alternative formats
+
+The journal accepts Word or LaTeX. The Word file above is the primary submission; these
+are provided in case they are requested.
+
+| File | Purpose |
+| :--- | :--- |
+| `Main_Manuscript_IJDSA_R1.pdf` | Reading copy, rendered **from the clean .docx via Word**, so it is the exact layout the editor opens. Attach only if a PDF is asked for. |
+| `Main_Manuscript_IJDSA_R1.tex` | Two-column LaTeX source, generated with pandoc. |
+| `figures/Figure1.png` … `Figure7.png` | Figures for the LaTeX build, renamed to match manuscript numbering and referenced by **relative** path, so the bundle compiles anywhere. |
+
+If submitting LaTeX, upload the `.tex` together with the whole `figures/` folder. No
+LaTeX engine is installed in this project, so the `.tex` has not been compiled here; it
+is provided as source and should be checked once before use. The PDF above is authoritative.
+
 Figures are embedded in both manuscript files. If the journal later requests separate
 figure files, they are in `outputs/figures_real/` at 330 dpi. Filenames do **not** match
 figure numbers, because numbering follows order of first mention as the journal requires:
