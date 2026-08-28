@@ -17,7 +17,7 @@ from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Inches, Pt, RGBColor
 
-OUTDIR = "MMI_submission_package"
+OUTDIR = "MMI_submission_package/IJDSA_R1"
 DOCX = f"{OUTDIR}/Response_to_Reviewers_IJDSA_R1.docx"
 MD = f"{OUTDIR}/Response_to_Reviewers_IJDSA_R1.md"
 

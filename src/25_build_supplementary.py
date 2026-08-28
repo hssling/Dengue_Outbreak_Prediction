@@ -27,7 +27,7 @@ from docx.oxml.ns import qn
 from docx.shared import Inches, Pt, RGBColor
 
 REAL = "outputs/real"
-OUTDIR = "MMI_submission_package"
+OUTDIR = "MMI_submission_package/IJDSA_R1"
 SUPP = f"{OUTDIR}/Supplementary_IJDSA_R1.docx"
 COVER = f"{OUTDIR}/Cover_Letter_IJDSA_R1.docx"
 SUBMISSION_ID = "9abb84c1-1d65-44de-916a-fc708a733fe8"

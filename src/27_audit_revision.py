@@ -197,9 +197,9 @@ def test_cross_document():
                 t += "\n" + "\t".join(c.text for c in r.cells)
         return t
 
-    resp = doctext("MMI_submission_package/Response_to_Reviewers_IJDSA_R1.docx")
-    supp = doctext("MMI_submission_package/Supplementary_IJDSA_R1.docx")
-    cover = doctext("MMI_submission_package/Cover_Letter_IJDSA_R1.docx")
+    resp = doctext("MMI_submission_package/IJDSA_R1/Response_to_Reviewers_IJDSA_R1.docx")
+    supp = doctext("MMI_submission_package/IJDSA_R1/Supplementary_IJDSA_R1.docx")
+    cover = doctext("MMI_submission_package/IJDSA_R1/Cover_Letter_IJDSA_R1.docx")
 
     for name, t, must in [
         ("response letter", resp, ["0.637", "0.551", "0.759", "350", "124", "0.635"]),

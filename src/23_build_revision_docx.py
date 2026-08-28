@@ -31,7 +31,7 @@ from docx.shared import Inches, Pt, RGBColor
 NEW_MD = "reports/MANUSCRIPT_IJDSA_R1.md"
 OLD_MD = "reports/MANUSCRIPT_IJDSA.md"
 FIGDIR = "outputs/figures_real"
-OUTDIR = "MMI_submission_package"
+OUTDIR = "MMI_submission_package/IJDSA_R1"
 CLEAN = f"{OUTDIR}/Main_Manuscript_IJDSA_R1_clean.docx"
 TRACKED = f"{OUTDIR}/Main_Manuscript_IJDSA_R1_tracked.docx"
 

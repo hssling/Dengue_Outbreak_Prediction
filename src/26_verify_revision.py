@@ -18,7 +18,7 @@ from docx import Document
 
 MD = "reports/MANUSCRIPT_IJDSA_R1.md"
 REAL = "outputs/real"
-PKG = "MMI_submission_package"
+PKG = "MMI_submission_package/IJDSA_R1"
 
 M = json.load(open(f"{REAL}/real_metrics.json"))
 P = json.load(open(f"{REAL}/panel_provenance.json"))
