@@ -1,0 +1,106 @@
+model,state,mae_log,n
+Gradient boosting (multi-modal),ANDAMAN AND NICOBAR,1.6603443098386645,7.0
+Gradient boosting (multi-modal),ANDHRA PRADESH,0.545224484048709,7.0
+Gradient boosting (multi-modal),ARUNACHAL PRADESH,1.7354550299887923,7.0
+Gradient boosting (multi-modal),ASSAM,1.7650149757946632,7.0
+Gradient boosting (multi-modal),BIHAR,1.3848967887144799,7.0
+Gradient boosting (multi-modal),CHANDIGARH,0.828092888599288,7.0
+Gradient boosting (multi-modal),CHHATTISGARH,1.5469461843311716,7.0
+Gradient boosting (multi-modal),DADRA AND NAGAR HAVELI,0.7844859566774662,7.0
+Gradient boosting (multi-modal),DAMAN AND DIU,0.6838210000104381,7.0
+Gradient boosting (multi-modal),DELHI,0.8169016070555376,7.0
+Gradient boosting (multi-modal),GOA,0.4839257331303354,7.0
+Gradient boosting (multi-modal),GUJARAT,0.5089036085695654,7.0
+Gradient boosting (multi-modal),HARYANA,0.9235810559119987,7.0
+Gradient boosting (multi-modal),HIMACHAL PRADESH,2.1719725392850266,7.0
+Gradient boosting (multi-modal),JAMMU AND KASHMIR,2.056959014451331,7.0
+Gradient boosting (multi-modal),JHARKHAND,1.1139705131694841,7.0
+Gradient boosting (multi-modal),KARNATAKA,0.892055096517028,7.0
+Gradient boosting (multi-modal),KERALA,0.8493791363584425,7.0
+Gradient boosting (multi-modal),LAKSHADWEEP,1.2183322506246792,7.0
+Gradient boosting (multi-modal),MADHYA PRADESH,0.8150542936359886,7.0
+Gradient boosting (multi-modal),MAHARASHTRA,0.7367035813023305,7.0
+Gradient boosting (multi-modal),MANIPUR,1.6734642945763103,7.0
+Gradient boosting (multi-modal),MEGHALAYA,1.1785028323276248,7.0
+Gradient boosting (multi-modal),MIZORAM,1.034408578227366,7.0
+Gradient boosting (multi-modal),NAGALAND,2.9329050844634845,7.0
+Gradient boosting (multi-modal),ODISHA,1.4000724421336768,7.0
+Gradient boosting (multi-modal),PUDUCHERRY,0.7626612059337357,7.0
+Gradient boosting (multi-modal),PUNJAB,0.4635299985497309,7.0
+Gradient boosting (multi-modal),RAJASTHAN,0.8213804619368504,7.0
+Gradient boosting (multi-modal),SIKKIM,1.3211653984090699,7.0
+Gradient boosting (multi-modal),TAMIL NADU,0.6891103105912271,7.0
+Gradient boosting (multi-modal),TELANGANA,0.6054574108607638,7.0
+Gradient boosting (multi-modal),TRIPURA,1.2057629206385165,7.0
+Gradient boosting (multi-modal),UTTAR PRADESH,0.9428101423144787,7.0
+Gradient boosting (multi-modal),UTTARAKHAND,1.6602471658431963,7.0
+Persistence (previous year),ANDAMAN AND NICOBAR,1.125151710162886,7.0
+Persistence (previous year),ANDHRA PRADESH,0.6163904807207073,7.0
+Persistence (previous year),ARUNACHAL PRADESH,2.359755085259373,7.0
+Persistence (previous year),ASSAM,1.7282052173132727,7.0
+Persistence (previous year),BIHAR,1.1851748672789022,7.0
+Persistence (previous year),CHANDIGARH,0.6790379047261148,7.0
+Persistence (previous year),CHHATTISGARH,1.4202418597452782,7.0
+Persistence (previous year),DADRA AND NAGAR HAVELI,0.9931547375329822,7.0
+Persistence (previous year),DAMAN AND DIU,0.9009893885559915,7.0
+Persistence (previous year),DELHI,0.7917446385065452,7.0
+Persistence (previous year),GOA,0.5110794525435401,7.0
+Persistence (previous year),GUJARAT,0.9156966735393183,7.0
+Persistence (previous year),HARYANA,0.601790021510339,7.0
+Persistence (previous year),HIMACHAL PRADESH,1.9641007175369023,7.0
+Persistence (previous year),JAMMU AND KASHMIR,1.284861287291101,7.0
+Persistence (previous year),JHARKHAND,1.0477120584112214,7.0
+Persistence (previous year),KARNATAKA,0.9116010672930691,7.0
+Persistence (previous year),KERALA,0.5609625207082277,7.0
+Persistence (previous year),LAKSHADWEEP,0.8917461807793093,7.0
+Persistence (previous year),MADHYA PRADESH,1.1254750416143156,7.0
+Persistence (previous year),MAHARASHTRA,0.6680232574960606,7.0
+Persistence (previous year),MANIPUR,1.7465949977721813,7.0
+Persistence (previous year),MEGHALAYA,1.4702205195470246,7.0
+Persistence (previous year),MIZORAM,0.863727091120337,7.0
+Persistence (previous year),NAGALAND,2.544405506619634,7.0
+Persistence (previous year),ODISHA,0.8881476066935957,7.0
+Persistence (previous year),PUDUCHERRY,0.8842904085761863,7.0
+Persistence (previous year),PUNJAB,0.4815976260925025,7.0
+Persistence (previous year),RAJASTHAN,0.7564920870576675,7.0
+Persistence (previous year),SIKKIM,1.058151157169534,7.0
+Persistence (previous year),TAMIL NADU,0.8546104177019712,7.0
+Persistence (previous year),TELANGANA,0.6849463191564331,7.0
+Persistence (previous year),TRIPURA,1.3957570859126889,7.0
+Persistence (previous year),UTTAR PRADESH,0.8772424038592325,7.0
+Persistence (previous year),UTTARAKHAND,2.0091031859213695,7.0
+State climatology (training mean),ANDAMAN AND NICOBAR,1.24867563802408,7.0
+State climatology (training mean),ANDHRA PRADESH,0.46668878489136184,7.0
+State climatology (training mean),ARUNACHAL PRADESH,1.830411094579479,7.0
+State climatology (training mean),ASSAM,2.13478004645869,7.0
+State climatology (training mean),BIHAR,1.2253004398703384,7.0
+State climatology (training mean),CHANDIGARH,0.8005880506454839,7.0
+State climatology (training mean),CHHATTISGARH,1.1835352983167875,7.0
+State climatology (training mean),DADRA AND NAGAR HAVELI,0.7720642884263856,7.0
+State climatology (training mean),DAMAN AND DIU,0.663848966830812,7.0
+State climatology (training mean),DELHI,0.6581840620736547,7.0
+State climatology (training mean),GOA,0.3566952976854945,7.0
+State climatology (training mean),GUJARAT,0.5944084402801939,7.0
+State climatology (training mean),HARYANA,0.7940005622939177,7.0
+State climatology (training mean),HIMACHAL PRADESH,1.7399077899997515,7.0
+State climatology (training mean),JAMMU AND KASHMIR,1.3768929506553498,7.0
+State climatology (training mean),JHARKHAND,0.959542756345283,7.0
+State climatology (training mean),KARNATAKA,0.7365172659667031,7.0
+State climatology (training mean),KERALA,0.9426151795089347,7.0
+State climatology (training mean),LAKSHADWEEP,1.4646644657030077,7.0
+State climatology (training mean),MADHYA PRADESH,0.757811640777161,7.0
+State climatology (training mean),MAHARASHTRA,0.5294857265935455,7.0
+State climatology (training mean),MANIPUR,1.5405222573430757,7.0
+State climatology (training mean),MEGHALAYA,0.8421623379349924,7.0
+State climatology (training mean),MIZORAM,0.9780703487028228,7.0
+State climatology (training mean),NAGALAND,2.4288372122673634,7.0
+State climatology (training mean),ODISHA,0.7788986480785567,7.0
+State climatology (training mean),PUDUCHERRY,0.6279586917336466,7.0
+State climatology (training mean),PUNJAB,0.3747037653133507,7.0
+State climatology (training mean),RAJASTHAN,0.5126722962971113,7.0
+State climatology (training mean),SIKKIM,0.6225032185341278,7.0
+State climatology (training mean),TAMIL NADU,0.8248314929895955,7.0
+State climatology (training mean),TELANGANA,0.4778704104513934,7.0
+State climatology (training mean),TRIPURA,1.1095514022860675,7.0
+State climatology (training mean),UTTAR PRADESH,0.7591157979013025,7.0
+State climatology (training mean),UTTARAKHAND,1.511882157677503,7.0
