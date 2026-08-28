@@ -215,13 +215,15 @@ def title_banner(doc, title):
         ("Consent to Participate", "Not applicable (no individual participant data)."),
         ("Consent for Publication", "Not applicable."),
         ("Availability of Data and Materials", "The authenticated state-year panel, the "
+         "India admin-1 records extracted from the OpenDengue Spatial extract V1.3, the "
          "NCVBDC reconciliation table and all analysis outputs are openly available at "
-         "https://github.com/hssling/Dengue_Outbreak_Prediction. The panel is rebuilt "
-         "from the public OpenDengue Spatial extract V1.3 by src/20_build_real_panel.py."),
-        ("Code Availability", "src/20_build_real_panel.py (panel construction and "
-         "reconciliation), src/21_real_analysis.py (leakage-free modelling, benchmarks "
-         "and leakage experiment) and src/22_real_figures.py (figures) regenerate every "
-         "number and figure reported here in a single pass."),
+         "https://github.com/hssling/Dengue_Outbreak_Prediction. A manifest records the "
+         "origin, release version and SHA-256 checksum of every input file."),
+        ("Code Availability", "All code for panel construction and reconciliation, "
+         "leakage-free modelling, the benchmark suite, the leakage experiment and figure "
+         "generation is available at the repository above, together with two automated "
+         "verification suites. Every number and figure reported here is regenerated in a "
+         "single pass; see Supplementary Table S6 for instructions."),
         ("Author Contributions", "Siddalingaiah H S: Conceptualization, Methodology, "
          "Software, Formal analysis, Visualization, Supervision, Validation, "
          "Writing - original draft. Sowjanya D: Writing - review & editing. "

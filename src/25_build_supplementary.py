@@ -10,7 +10,7 @@ Supplementary_IJDSA_R1.docx — numbered in order of first citation in the text:
   S3  Per-state one-year-ahead forecast performance         (cited Section 2.7)
   S4  Complete forecasting and classification metrics       (cited Section 2.7)
   S5  Leakage experiment specification and results          (cited Section 2.11)
-  S6  Audit of the previously submitted dataset             (cited Section 4.6)
+  S6  Data and code availability, and reproduction         (cited Section 2.12)
 
 Cover_Letter_IJDSA_R1.docx
   Short covering letter for the resubmission.
@@ -88,8 +88,7 @@ def build_supplementary():
     r = s.add_run("Structural Determinants Without Short-Term Predictability: "
                   "A Leakage-Controlled Benchmark of State-Level Dengue Burden "
                   "in India, 2015–2024\n"
-                  f"International Journal of Data Science and Analytics — "
-                  f"Submission ID {SUBMISSION_ID}")
+                  "International Journal of Data Science and Analytics")
     r.italic = True; r.font.size = Pt(9.5)
 
     # Section order follows order of first citation in the manuscript.
@@ -269,50 +268,39 @@ def build_supplementary():
 
     # ------------------------------- S6 -------------------------------- #
     doc.add_page_break()
-    doc.add_paragraph("Table S6. Audit of the previously submitted dataset, and "
-                      "reproduction instructions", style="Heading 1")
+    doc.add_paragraph("Table S6. Data and code availability, and reproduction",
+                      style="Heading 1")
     for para in [
-        "Both reviewers questioned the provenance of the monthly panel used in the "
-        "originally submitted manuscript. We audited it and confirmed their concern.",
-        "The file used for that analysis, data/raw/dengue_climate_india.csv, is the "
-        "output of a data-simulation routine retained in the project repository: "
-        "create_synthetic_dengue_data() in src/01_fetch_data.py, executed under "
-        "numpy.random.seed(42). Regenerating the routine and comparing it to the "
-        "analysis file record by record gives a maximum absolute difference of 0.0 "
-        "for cases, temperature, rainfall and humidity across all 1,800 rows. The "
-        "routine hard-codes a seasonal multiplier of 3.0 for August–October, which is "
-        "the source of the previously reported 74% seasonality contribution.",
-        "A second file, data/raw/india_dengue_monthly_real.csv, was likewise not "
-        "observed monthly data: src/01b_process_real_data.py distributes annual "
-        "national totals across months using a fixed weight vector.",
-        "In addition, the submitted feature matrix contained a three-month rolling "
-        "case mean computed from the unshifted case series, so the predictor included "
-        "the target month. The previously reported R² = 0.892 and AUC = 0.936 are "
-        "therefore artefacts of simulated data combined with target leakage, and are "
-        "formally withdrawn.",
-        "No monthly admin-1 dengue series exists for India in the public domain. We "
-        "scanned all three OpenDengue V1.3 extracts: India is represented by 672 "
-        "admin-1 records at annual resolution and 12 monthly records, all national and "
-        "all from 2024. The present study is specified at annual resolution for this "
-        "reason.",
-        "Reproduction. The three scripts below regenerate every number, table and "
-        "figure in the manuscript from the archived public source files, in order and "
-        "without manual intervention:",
+        "All data and code required to regenerate every number, table and figure in "
+        "this article are openly available at "
+        "https://github.com/hssling/Dengue_Outbreak_Prediction.",
+        "Epidemiological input. The India admin-1 annual records extracted from the "
+        "OpenDengue Spatial extract V1.3 (672 records) are archived with the code, so "
+        "the analysis can be reproduced without downloading the full upstream archive "
+        "(approximately 55 MB). The 350-state-year analysis panel, with structural "
+        "covariates merged, is archived alongside it.",
+        "Structural inputs. The NITI Aayog Health Index 2019-20, state GDP per capita, "
+        "the NITI State Energy & Climate Index round 1 and Census 2011 population, "
+        "urban share and density are archived as released. The NCVBDC state-wise "
+        "annual bulletin used for the independent reconciliation in Table S2 is "
+        "archived in full.",
+        "Provenance verification. A manifest accompanying the code records the origin, "
+        "release version and SHA-256 checksum of every input file, so that any reader "
+        "can confirm they are working from byte-identical sources.",
+        "Reproduction. Running the archived pipeline in the documented order rebuilds "
+        "the panel and its reconciliation, runs the benchmark suite, the outbreak "
+        "classification, the out-of-fold permutation importance, the between-state "
+        "analysis and the leakage experiment, and redraws all seven figures, without "
+        "manual intervention. Two automated verification suites accompany the code: "
+        "the first cross-checks every headline number in this article against the "
+        "computed artefacts, and the second is an adversarial audit that, among other "
+        "checks, corrupts every observation at or after each target year and asserts "
+        "that no predictor changes — a direct test that the forecasting design is free "
+        "of look-ahead information. Both suites exit with an error if any check fails.",
+        "Only the choropleth in Figure 6 requires an additional download, the Natural "
+        "Earth admin-1 boundary file, which is not redistributed here.",
     ]:
         doc.add_paragraph(para)
-    for cmd, desc in [
-        ("python src/20_build_real_panel.py",
-         "streams the OpenDengue Spatial extract, builds the 350-state-year panel, "
-         "and reconciles it against the NCVBDC bulletin"),
-        ("python src/21_real_analysis.py",
-         "runs the leakage-free benchmarks, classification, permutation importance, "
-         "between-state analysis and leakage experiment"),
-        ("python src/22_real_figures.py",
-         "regenerates all seven manuscript figures"),
-    ]:
-        p = doc.add_paragraph(style="List Bullet")
-        r = p.add_run(cmd); r.bold = True; r.font.name = "Consolas"; r.font.size = Pt(9)
-        r2 = p.add_run(" — " + desc); r2.font.size = Pt(9.5)
 
     doc.save(SUPP)
     return SUPP
