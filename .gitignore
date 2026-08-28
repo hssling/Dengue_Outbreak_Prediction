@@ -9,17 +9,33 @@ __pycache__/
 env/
 venv/
 
-# Data (EXCLUDE ALL RAW DATA)
-data/raw/
-*.pdf
+# Working scratch
+.work/
+
+# Raw third-party archives are excluded (size / redistribution).
+# Small source tables needed to reproduce the analysis ARE tracked - see SOURCES.md.
+data/raw/*
+!data/raw/data_related/
+data/raw/data_related/*
+!data/raw/data_related/*.csv
+!data/raw/Dengue data India 2022-2025.xlsx
+
+# The superseded synthetic development dataset IS tracked: it is the evidence
+# for the provenance audit in Supplementary Table S6 and must be independently
+# checkable. It is not on the analysis path.
+!data/raw/dengue_climate_india.csv
+
+# Large binaries
 *.zip
 *.shp
 *.shx
 *.dbf
 *.parquet
-*.xlsx
+outputs/models/*.joblib
+
+# Reviewer correspondence (not for public distribution)
+MMI_submission_package/*.pdf
 
 # Project specific
 .vscode/
 .idea/
-outputs/models/*.joblib

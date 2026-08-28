@@ -1,0 +1,50 @@
+{
+  "opendengue_india_admin1_year_rows": 672,
+  "moh_rows_in_window": 358,
+  "source_uuids": [
+    "MOH-IND-20152024-Y01-00",
+    "MOH-IND-20152024-Y01-02",
+    "MOH-IND-2022-Y01-01"
+  ],
+  "duplicate_state_year_records_resolved": 0,
+  "states_all_admin1": 36,
+  "states_complete_2015_2024": 35,
+  "excluded_states": [
+    "WEST BENGAL"
+  ],
+  "exclusion_rule": "A state/UT is eligible only if an observed NCVBDC annual total is present for every one of the 10 study years (2015-2024). No missing year was imputed, interpolated or carried forward.",
+  "missing_years_by_excluded_state": {
+    "WEST BENGAL": 2
+  },
+  "panel_state_years": 350,
+  "panel_states": 35,
+  "zero_count_state_years": 6,
+  "structural_covariate_missing_states": {
+    "health_index_2019_20": [
+      "DAMAN AND DIU"
+    ],
+    "gdp_pc": [
+      "DADRA AND NAGAR HAVELI",
+      "DAMAN AND DIU",
+      "LAKSHADWEEP"
+    ],
+    "seci_score": [
+      "DAMAN AND DIU"
+    ],
+    "pop_2011": [
+      "DAMAN AND DIU"
+    ]
+  },
+  "ncvbdc_reconciliation": {
+    "overlapping_state_years": 124,
+    "exact_matches": 124,
+    "pct_exact": 100.0,
+    "median_abs_pct_difference": 0.0,
+    "overlap_years": [
+      2021,
+      2022,
+      2023,
+      2024
+    ]
+  }
+}
