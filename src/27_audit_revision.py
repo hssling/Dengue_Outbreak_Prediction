@@ -35,6 +35,7 @@ spec.loader.exec_module(ra)
 PANEL = "data/processed/real_state_year_panel.csv"
 MD = "reports/MANUSCRIPT_IJDSA_R1.md"
 REAL = "outputs/real"
+PKG = "MMI_submission_package/IJDSA_R1"
 M = json.load(open(f"{REAL}/real_metrics.json"))
 
 ok, fail = [], []
@@ -172,6 +173,55 @@ def test_sequential_display_items():
 
 
 # ------------------------------------------------------------------ D ----- #
+def test_standalone_article():
+    """The article and its supplement must read as a standalone paper.
+
+    No submission-process metadata, no reviewer correspondence, no local file
+    paths. That material belongs in the cover letter and the point-by-point
+    response, which are correspondence and are checked separately.
+    """
+    from docx import Document
+
+    text = open(MD, encoding="utf-8").read()
+
+    # Phrases chosen to avoid false positives: "revised" legitimately appears in
+    # Section 2.2 describing superseding ministry data releases.
+    meta = ["originally submitted", "previously submitted", "this manuscript",
+            "the reviewers", "Reviewer 1", "Reviewer 2", "referee",
+            "point-by-point", "resubmission", "9abb84c1",
+            "in the interest of full transparency"]
+    paths = [r"src/\d", r"\.py\b", r"data/(raw|processed)", r"outputs/",
+             r"\.csv\b", r"\.json\b", r"\.docx\b"]
+
+    for m in meta:
+        check(f"E. article free of submission metadata: '{m}'",
+              m.lower() not in text.lower())
+    for p in paths:
+        hits = re.findall(p, text)
+        check(f"E. article free of local file references: /{p}/",
+              not hits, f"found {hits[:3]}")
+
+    def doctext(path):
+        d = Document(path)
+        t = "\n".join(x.text for x in d.paragraphs)
+        for tb in d.tables:
+            for r in tb.rows:
+                t += "\n" + "\t".join(c.text for c in r.cells)
+        return t
+
+    supp = doctext(f"{PKG}/Supplementary_IJDSA_R1.docx")
+    for m in ["originally submitted", "previously submitted", "Reviewer",
+              "9abb84c1", "Submission ID"]:
+        check(f"E. supplement free of submission metadata: '{m}'",
+              m.lower() not in supp.lower())
+
+    # The correspondence documents must still carry the disclosure in full.
+    for name in ["Cover_Letter_IJDSA_R1.docx", "Response_to_Reviewers_IJDSA_R1.docx"]:
+        t = doctext(f"{PKG}/{name}").lower()
+        check(f"E. {name} retains the provenance disclosure",
+              "synthetic" in t and "withdraw" in t)
+
+
 def test_cross_document():
     from docx import Document
 
@@ -210,9 +260,10 @@ def test_cross_document():
         check(f"D. {name} quotes the artefact numbers", not missing,
               f"missing {missing}")
 
-    # The disclosure must be present in all three, unambiguously.
-    for name, t in [("response letter", resp), ("supplementary", supp),
-                    ("cover letter", cover)]:
+    # The disclosure belongs in the correspondence only. The supplement is part
+    # of the article and is checked in test_standalone_article() for the
+    # ABSENCE of this material.
+    for name, t in [("response letter", resp), ("cover letter", cover)]:
         check(f"D. {name} discloses the synthetic-data error",
               "synthetic" in t.lower() and ("withdraw" in t.lower() or "withdrawn" in t.lower()))
 
@@ -227,6 +278,7 @@ if __name__ == "__main__":
     test_baseline_honesty()
     test_citations()
     test_sequential_display_items()
+    test_standalone_article()
     test_cross_document()
 
     lines = [f"PASSED {len(ok)}", f"FAILED {len(fail)}", ""]
