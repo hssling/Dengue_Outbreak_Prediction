@@ -83,25 +83,64 @@ def base_styles(doc):
         s.paragraph_format.space_after = Pt(3)
 
 
-def _tokens(text):
-    """Split markdown inline markup into renderable tokens."""
-    return [t for t in re.split(r"(\*\*.*?\*\*|\*.*?\*|\^[^\s|]+\^)", text) if t]
+LIST_BULLET = re.compile(r"^[*-]\s+")
+FIGLEGEND = re.compile(r"^\*\*Figure (\d)\.\*\*")
 
 
-def _style_run(run, tok):
-    if tok.startswith("**") and tok.endswith("**") and len(tok) > 4:
-        run.text = tok[2:-2]; run.bold = True
-    elif tok.startswith("*") and tok.endswith("*") and len(tok) > 2:
-        run.text = tok[1:-1]; run.italic = True
-    elif tok.startswith("^") and tok.endswith("^") and len(tok) > 2:
-        run.text = tok[1:-1]; run.font.superscript = True
-    else:
-        run.text = tok
+def split_list_marker(s):
+    """Strip a leading markdown bullet. Returns (text, paragraph_style).
+
+    This must happen BEFORE inline parsing: a leading "* " would otherwise be
+    read as an unmatched italic delimiter and corrupt the rest of the line.
+    """
+    if LIST_BULLET.match(s):
+        return LIST_BULLET.sub("", s, count=1), "List Bullet"
+    return s, None
+
+
+def parse_inline(text):
+    """Parse markdown emphasis into (text, bold, italic, superscript) runs.
+
+    Handles nesting (italic inside bold, as in "**... year *t*-1 ...**") by
+    tracking each delimiter independently rather than matching outermost pairs.
+    A delimiter with no partner later in the string is emitted literally, which
+    keeps things like the author footnote marker in "^1,*^" intact.
+    """
+    out, buf = [], []
+    bold = italic = sup = False
+
+    def flush():
+        if buf:
+            out.append(("".join(buf), bold, italic, sup))
+            del buf[:]
+
+    i, n = 0, len(text)
+    while i < n:
+        if text.startswith("**", i) and (bold or "**" in text[i + 2:]):
+            flush(); bold = not bold; i += 2; continue
+        if text[i] == "*" and (italic or "*" in text[i + 1:]):
+            flush(); italic = not italic; i += 1; continue
+        if text[i] == "^" and (sup or "^" in text[i + 1:]):
+            flush(); sup = not sup; i += 1; continue
+        buf.append(text[i]); i += 1
+    flush()
+    return out
+
+
+def _emit(run, piece):
+    txt, bold, italic, sup = piece
+    run.text = txt
+    if bold:
+        run.bold = True
+    if italic:
+        run.italic = True
+    if sup:
+        run.font.superscript = True
 
 
 def add_runs(p, text):
-    for tok in _tokens(text):
-        _style_run(p.add_run(), tok)
+    for piece in parse_inline(text):
+        _emit(p.add_run(), piece)
 
 
 # --------------------------------------------------------------------------- #
@@ -124,9 +163,9 @@ def add_tracked(p, text, mode):
         add_runs(p, text)
         return
     wrapper = _rev_el("w:ins" if mode == "ins" else "w:del")
-    for tok in _tokens(text):
+    for piece in parse_inline(text):
         run = p.add_run()
-        _style_run(run, tok)
+        _emit(run, piece)
         if mode == "del":
             # A deleted run must carry <w:delText>, not <w:t>.
             for t in run._r.findall(qn("w:t")):
@@ -136,9 +175,20 @@ def add_tracked(p, text, mode):
     p._p.append(wrapper)
 
 
+def _plain(text):
+    """Drop emphasis markers.
+
+    Word-level diffing splits on spaces, so a chunk can end up holding half of
+    an emphasis pair ("*Healthy" without its closing "*"). Rendering the
+    marked-up copy plain avoids stray literal asterisks; the clean copy keeps
+    full formatting.
+    """
+    return re.sub(r"\*\*|\*|\^", "", text)
+
+
 def word_diff(p, old, new):
     """Word-level tracked diff of two versions of one paragraph."""
-    a, b = old.split(" "), new.split(" ")
+    a, b = _plain(old).split(" "), _plain(new).split(" ")
     for op, i1, i2, j1, j2 in difflib.SequenceMatcher(None, a, b).get_opcodes():
         if op == "equal":
             add_tracked(p, " ".join(a[i1:i2]) + " ", "equal")
@@ -152,39 +202,80 @@ def word_diff(p, old, new):
 # --------------------------------------------------------------------------- #
 # Content blocks                                                              #
 # --------------------------------------------------------------------------- #
+def _repeat_header(row):
+    """Mark a row as a header so Word repeats it across page breaks."""
+    trPr = row._tr.get_or_add_trPr()
+    for tag in ("w:tblHeader", "w:cantSplit"):
+        el = OxmlElement(tag)
+        el.set(qn("w:val"), "true")
+        trPr.append(el)
+
+
+def _no_split(row):
+    trPr = row._tr.get_or_add_trPr()
+    el = OxmlElement("w:cantSplit")
+    el.set(qn("w:val"), "true")
+    trPr.append(el)
+
+
 def add_table(doc, lines, i):
     headers = [c.strip().replace("**", "") for c in lines[i].split("|")[1:-1]]
+    # Column alignment comes from the markdown separator row (:--- / ---: / :-:)
+    seps = [c.strip() for c in lines[i + 1].split("|")[1:-1]]
+    aligns = []
+    for spec in seps:
+        if spec.startswith(":") and spec.endswith(":"):
+            aligns.append(WD_ALIGN_PARAGRAPH.CENTER)
+        elif spec.endswith(":"):
+            aligns.append(WD_ALIGN_PARAGRAPH.RIGHT)
+        else:
+            aligns.append(WD_ALIGN_PARAGRAPH.LEFT)
+
     tbl = doc.add_table(rows=1, cols=len(headers))
     tbl.style = "Table Grid"
+    tbl.autofit = True
     for j, h in enumerate(headers):
         cell = tbl.rows[0].cells[j]
         cell.paragraphs[0].text = ""
+        cell.paragraphs[0].alignment = aligns[j] if j < len(aligns) else None
         r = cell.paragraphs[0].add_run(h); r.bold = True; r.font.size = Pt(9)
+    _repeat_header(tbl.rows[0])
+
     i += 2  # skip the |---| separator
     while i < len(lines) and lines[i].strip().startswith("|"):
         cells = [c.strip() for c in lines[i].split("|")[1:-1]]
-        row = tbl.add_row().cells
+        row = tbl.add_row()
+        _no_split(row)
         for j, c in enumerate(cells):
-            if j < len(row):
-                row[j].paragraphs[0].text = ""
-                add_runs(row[j].paragraphs[0], c)
-                for rr in row[j].paragraphs[0].runs:
+            if j < len(row.cells):
+                para = row.cells[j].paragraphs[0]
+                para.text = ""
+                # Numeric columns read better centred; the label column stays left.
+                para.alignment = aligns[j] if j < len(aligns) else None
+                add_runs(para, c)
+                for rr in para.runs:
                     rr.font.size = Pt(9)
         i += 1
+    doc.add_paragraph().paragraph_format.space_after = Pt(2)
     return i
 
 
-def embed_figures(doc):
-    for key in sorted(FIGURES):
-        fname, width = FIGURES[key]
-        path = os.path.join(FIGDIR, fname)
-        if not os.path.exists(path):
-            print(f"  [warn] missing figure {path}")
-            continue
-        cap = doc.add_paragraph(); cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        cap.add_run().add_picture(path, width=Inches(width))
-        lab = doc.add_paragraph(); lab.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        r = lab.add_run(f"Figure {key}"); r.bold = True; r.font.size = Pt(9)
+def embed_figure(doc, number):
+    """Place one figure image, immediately above its own legend."""
+    entry = FIGURES.get(number)
+    if not entry:
+        return
+    fname, width = entry
+    path = os.path.join(FIGDIR, fname)
+    if not os.path.exists(path):
+        print(f"  [warn] missing figure {path}")
+        return
+    p = doc.add_paragraph()
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p.paragraph_format.space_before = Pt(10)
+    p.paragraph_format.space_after = Pt(2)
+    p.paragraph_format.keep_with_next = True      # legend must not orphan
+    p.add_run().add_picture(path, width=Inches(width))
 
 
 def title_banner(doc, title):
@@ -248,7 +339,8 @@ def prose_blocks(lines):
         s = l.strip()
         if not s or s.startswith("|") or s.startswith("#") or set(s) <= {"-"}:
             continue
-        out.append(s)
+        # Strip bullets so these keys match the text used for tracked pairing.
+        out.append(split_list_marker(s)[0])
     return out
 
 
@@ -315,14 +407,27 @@ def build(tracked=False):
             doc.add_paragraph(s[4:], style="Heading 3"); i += 1; continue
         if s.startswith("## "):
             heading = s[3:]
-            doc.add_paragraph(heading, style="Heading 1")
+            # Figures need the full page width, so the legends section runs
+            # single-column; the reference list returns to two columns.
             if heading.startswith("7. Figure Legends") and body_started:
                 doc.add_section(WD_SECTION.CONTINUOUS); set_columns(doc.sections[-1], 1)
-                embed_figures(doc)
+            elif heading.startswith("8. References") and body_started:
                 doc.add_section(WD_SECTION.CONTINUOUS); set_columns(doc.sections[-1], 2)
+            doc.add_paragraph(heading, style="Heading 1")
             i += 1; continue
 
-        p = doc.add_paragraph()
+        # A figure legend carries its own image directly above it.
+        mfig = FIGLEGEND.match(s)
+        if mfig and body_started:
+            embed_figure(doc, int(mfig.group(1)))
+
+        body, list_style = split_list_marker(s)
+        p = doc.add_paragraph(style=list_style) if list_style else doc.add_paragraph()
+        s = body
+        # A table caption must not be stranded at the foot of a column.
+        if s.startswith("**Table "):
+            p.paragraph_format.keep_with_next = True
+            p.paragraph_format.space_before = Pt(8)
         if tracked:
             mode, counterpart = pairing.get(s, ("ins", None))
             if mode == "equal":

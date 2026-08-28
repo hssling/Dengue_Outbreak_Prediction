@@ -168,7 +168,7 @@ Using the finest-resolution authenticated dengue panel that India's public surve
 **Table 1. One-year-ahead forecasting performance, expanding-window evaluation (origins 2018–2024; 245 out-of-sample state-year forecasts).** Pooled R² is computed across all forecasts; within-state R² is computed after removing each state's training-window mean from both observed and predicted values, isolating skill at anticipating temporal change.
 
 | Model | Pooled R² (log scale) | Within-state R² | MAE (log scale) | MAE (cases) | RMSE (cases) |
-| :--- | :--- | :--- | :--- | :--- | :--- |
+| :--- | :---: | :---: | :---: | :---: | :---: |
 | State climatology (training mean) | **0.637** | −0.002 | 0.989 | 2 830 | 5 092 |
 | Negative-binomial GLM (full) | 0.607 | −0.084 | 1.055 | 3 110 | 5 721 |
 | Gradient boosting (multi-modal) | 0.551 | −0.239 | 1.149 | 3 052 | 5 485 |
@@ -180,7 +180,7 @@ Using the finest-resolution authenticated dengue panel that India's public surve
 **Table 2. Outbreak-year classification, expanding-window thresholds and training-derived decision cut-off (210 state-years; 95 outbreak years).**
 
 | Metric | Value | Non-informative reference |
-| :--- | :--- | :--- |
+| :--- | :---: | :---: |
 | AUC-ROC | 0.522 | 0.500 |
 | Average precision | 0.468 | 0.452 (prevalence) |
 | Brier score | 0.326 | 0.248 |
@@ -191,7 +191,7 @@ Using the finest-resolution authenticated dengue panel that India's public surve
 **Table 3. Between-state associations with mean annual dengue incidence per 100 000, 2015–2024 (n = 32 states/UTs with observed covariates; Spearman ρ with bootstrap 95% CI).**
 
 | Structural indicator | ρ | 95% CI | p |
-| :--- | :--- | :--- | :--- |
+| :--- | :---: | :---: | :---: |
 | Urban population share (2011) | **0.635** | 0.33 to 0.82 | < 0.001 |
 | GDP per capita | **0.609** | 0.32 to 0.80 | < 0.001 |
 | State Energy & Climate Index | 0.349 | −0.03 to 0.68 | 0.050 |
@@ -202,7 +202,7 @@ Using the finest-resolution authenticated dengue panel that India's public surve
 **Table 4. Leakage experiment: apparent performance under the primary design and under two common design defects, on identical data.**
 
 | Specification | R² (log scale) | Inflation vs. leakage-free |
-| :--- | :--- | :--- |
+| :--- | :---: | :---: |
 | Leakage-free year-ahead (primary) | 0.551 | — |
 | Non-temporal random-split cross-validation | 0.626 | +0.075 |
 | Unshifted 3-year rolling mean (target leakage) | 0.759 | +0.209 |
@@ -232,25 +232,25 @@ Using the finest-resolution authenticated dengue panel that India's public surve
 ## 8. References
 
 
-1. World Health Organization. *Dengue and Severe Dengue* [Fact sheet]. Geneva: World Health Organization; 2024. Available from: https://www.who.int/news-room/fact-sheets/detail/dengue-and-severe-dengue (accessed 20 Aug 2026).
+1. World Health Organization. *Dengue* [Internet]. Geneva: World Health Organization; 2025 Aug 21 [cited 2026 Aug 20]. Available from: https://www.who.int/news-room/fact-sheets/detail/dengue-and-severe-dengue
 
 2. Bhatt S, Gething PW, Brady OJ, Messina JP, Farlow AW, Moyes CL, et al. The global distribution and burden of dengue. *Nature*. 2013;496(7446):504-507. doi:10.1038/nature12060.
 
 3. Shepard DS, Halasa YA, Tyagi BK, et al. Economic and disease burden of dengue illness in India. *Am J Trop Med Hyg*. 2014;91(6):1235-1242. doi:10.4269/ajtmh.14-0002.
 
-4. National Centre for Vector Borne Diseases Control. *Dengue Cases and Deaths in the Country since 2015*. New Delhi: Ministry of Health and Family Welfare, Government of India; 2025. Available from: https://ncvbdc.mohfw.gov.in (accessed 20 Aug 2026).
+4. National Centre for Vector Borne Diseases Control. *Dengue Situation in India: Dengue Cases and Deaths in the Country* [Internet]. New Delhi: Directorate General of Health Services, Ministry of Health and Family Welfare, Government of India; [cited 2026 Aug 20]. Available from: https://ncvbdc.mohfw.gov.in/index4.php?lang=1&level=0&lid=3715&linkid=431
 
 5. Lowe R, Stewart-Ibarra AM, Petrova D, García-Díez M, Borbor-Cordova MJ, Mejía R, et al. Climate services for health: predicting the evolution of the 2016 dengue season in Machala, Ecuador. *Lancet Planet Health*. 2017;1(4):e142-e151. doi:10.1016/S2542-5196(17)30064-5.
 
 6. Salim NAM, Wah YB, Reeves C, Smith M, Yaacob WFW, Mudin RN, et al. Prediction of dengue outbreak in Selangor Malaysia using machine learning techniques. *Sci Rep*. 2021;11(1):939. doi:10.1038/s41598-020-79193-2.
 
-7. Clarke J, Lim A, Gupte P, et al. A global dataset of publicly available dengue case count data. *Sci Data*. 2024;11:296. doi:10.1038/s41597-024-03120-7. Available from: https://opendengue.org (accessed 20 Aug 2026).
+7. Clarke J, Lim A, Gupte P, et al. A global dataset of publicly available dengue case count data. *Sci Data*. 2024;11:296. doi:10.1038/s41597-024-03120-7. Data extract used: OpenDengue Spatial extract V1.3 [dataset]. Available from: https://opendengue.org [cited 2026 Aug 20].
 
 8. Kapoor S, Narayanan A. Leakage and the reproducibility crisis in machine-learning-based science. *Patterns*. 2023;4(9):100804. doi:10.1016/j.patter.2023.100804.
 
-9. NITI Aayog. *Healthy States, Progressive India: Report on the Ranks of States and Union Territories (Fourth Edition, 2019-20)*. New Delhi: NITI Aayog, Government of India; 2021.
+9. NITI Aayog. *Healthy States, Progressive India: Report on the Ranks of States and Union Territories—Health Index Round IV 2019–20*. New Delhi: NITI Aayog, Government of India; 2021.
 
-10. Collins GS, Moons KGM, Dhiman P, Riley RD, Beam AL, Van Calster B, et al. TRIPOD+AI statement: updated guidance for reporting clinical prediction models that use regression or machine learning methods. *BMJ*. 2024;385:e078378. doi:10.1136/bmj-2023-078378.
+10. Collins GS, Moons KGM, Dhiman P, Riley RD, Beam AL, Van Calster B, et al. TRIPOD+AI statement: updated guidance for reporting clinical prediction models that use regression or machine learning methods. *BMJ*. 2024;385:e078378. doi:10.1136/bmj-2023-078378. Erratum in: *BMJ*. 2024;385:q902. doi:10.1136/bmj.q902.
 
 11. Tjaden NB, Thomas SM, Fischer D, Beierkuhnlein C. Extrinsic incubation period of dengue: knowledge, backlog, and applications of temperature dependence. *PLoS Negl Trop Dis*. 2013;7(6):e2207. doi:10.1371/journal.pntd.0002207.
 
