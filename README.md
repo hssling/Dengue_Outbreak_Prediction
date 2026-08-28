@@ -109,7 +109,7 @@ archive); see [SOURCES.md](SOURCES.md) for URLs and SHA-256 checksums of every i
 │   ├── real/                                       # metrics, reconciliation, forecasts
 │   └── figures_real/                               # seven manuscript figures, 330 dpi
 ├── reports/MANUSCRIPT_IJDSA_R1.md                  # master manuscript text
-├── MMI_submission_package/*_IJDSA_R1*              # clean + tracked MS, response, supplement
+├── MMI_submission_package/IJDSA_R1/                # THE 5 FILES TO UPLOAD (see its README)
 ├── src/20-28                                       # canonical pipeline (see above)
 └── SOURCES.md                                      # provenance and checksums
 ```
