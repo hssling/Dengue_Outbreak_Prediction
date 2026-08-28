@@ -1,6 +1,8 @@
 # Response to the Editor and Reviewers
 
-**Multi-Modal Machine Learning Framework for State-Level Dengue Outbreak Prediction in India**
+**Apparent Machine Learning Skill in Indian Dengue Forecasting Vanishes Under Leakage-Free Within-State Evaluation**
+
+*(submitted as “Multi-Modal Machine Learning Framework for State-Level Dengue Outbreak Prediction in India”)*
 
 *International Journal of Data Science and Analytics — Submission ID 9abb84c1-1d65-44de-916a-fc708a733fe8*
 
